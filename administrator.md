@@ -1,6 +1,6 @@
+![image](https://github.com/user-attachments/assets/6f88c7d2-da52-4d5b-9bc5-dc6a92000bc1)
+
 # HackTheBox - Administrator
-- Difficulty : Medium
-- Category : Windows
 
 1. scan open port & running service using nmap. (ftp, smb, ldap (active directory), rpc are running.)
    
@@ -79,8 +79,33 @@
     ![image](https://github.com/user-attachments/assets/e2bd5e45-053d-4616-a922-23f2b2867f7a)
 
 
-18. back to bloodhound, check what emily can do.
+17. back to bloodhound, check what emily can do.
     
     ![image](https://github.com/user-attachments/assets/bbf27222-d42f-4b41-aaec-53c36495c971)
 
-19. 
+
+18. targetedkerberoast to get ethan hash.
+    
+    ![image](https://github.com/user-attachments/assets/1744244b-a5e3-4619-b635-b58fcbd80b0f)
+
+
+19. crack the hash using john
+
+    ![image](https://github.com/user-attachments/assets/712e1ca7-1c7f-4a69-93f7-58f5295aece8)
+    
+
+21. login as ethan
+    
+    ![image](https://github.com/user-attachments/assets/a67afc38-62c5-465b-8924-6969e4103dc7)
+
+
+22. back to bloodhound, see what ethan can do.
+    ![image](https://github.com/user-attachments/assets/5dfbf6d8-c768-4c4f-9003-dd367342afa7)
+
+
+23. dcsync attack using impacket-secretsdump to get admin hash
+    ![image](https://github.com/user-attachments/assets/8f0ee40d-3eac-4cd9-836a-0bb56dbd45af)
+
+24. login as admin using admin hash and grab the root flag
+    ![image](https://github.com/user-attachments/assets/89f6ee8e-f698-4c07-8836-ff541bcad2fa)
+
