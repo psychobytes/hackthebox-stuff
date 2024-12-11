@@ -1,3 +1,11 @@
+---
+title: "HackTheBox Greenhorn"
+date: "December 7, 2024"
+description: "Utilize information disclosure in Gitea to get credentials, Exploiting vulnerability at pluck import module, and Privesc by depixelizing redacted credentials in a document."
+difficulty : "Easy"
+opsystem : "Linux"
+---
+
 ![image](https://github.com/user-attachments/assets/47e26060-f0dc-4dec-8334-b50c8f4075ff)
 
 # HackTheBox - Greenhorn
