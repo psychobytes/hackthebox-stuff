@@ -1,3 +1,11 @@
+---
+title: "HackTheBox Administrator Writeup"
+date: "December 5, 2024"
+description: "Hacking Windows Active Directory using Bloodhound, and Cracking PasswordSafe password manager file."
+difficulty : "Medium"
+opsystem : "Windows"
+---
+
 ![image](https://github.com/user-attachments/assets/6f88c7d2-da52-4d5b-9bc5-dc6a92000bc1)
 
 # HackTheBox - Administrator
