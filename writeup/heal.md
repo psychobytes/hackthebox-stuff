@@ -50,8 +50,21 @@ after we carried out information gathering and reconnaisance, we got quite a lot
 download the resume and intercept the traffic using burpsuite. forward the request until we get request at download endpoint.
 ![image](https://github.com/user-attachments/assets/75e972c2-39af-41b0-bc75-a23940e05075)
 
-pay attention to the following request. at the request line (the firsr line of the http request) we 
+pay attention to the following request. at the request line (the first line of the http request) we make a get request to the /download endpoint with the ?filename= parameter. We can assume that this request aims to retrieve a file in a directory.
 ![image](https://github.com/user-attachments/assets/16116ce9-ed63-461a-b5be-0f1f73ea9785)
 
+we can abuse this feature to retrieve any file in the server (example: /etc/passwd). we managed to get a response of 200 (ok) and data from /etc/passwd. that means the /download endpoint has a local file inclusion vulnerability.
+![image](https://github.com/user-attachments/assets/86068889-e580-48e8-8d10-2b3a5256bdc1)
 
+> Local File Inclusion [LFI]
+>
+> The File Inclusion vulnerability allows an attacker to include a file, usually exploiting a “dynamic file inclusion” mechanisms implemented in the target application.
+>
+> Local file inclusion (also known as LFI) is the process of including files, that are already locally present on the server, through the exploiting of vulnerable inclusion procedures implemented in the application. This vulnerability occurs, for example, when a page receives, as input, the path to the file that has to be included and this input is not properly sanitized, allowing directory traversal characters (such as dot-dot-slash) to be injected.
+>
+> source : [owasp.org](https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/07-Input_Validation_Testing/11.1-Testing_for_Local_File_Inclusion)
 
+we can ask AI for directory structure of Ruby on Rails and sesitive info inside it. by knowing the directory structure and sensitive files in it, we can look for files that most likely contain credentials in them to gain initial access.
+![image](https://github.com/user-attachments/assets/5ceb2783-e70b-43e0-b31c-0cedd16638b8)
+
+try to get database.yml file.
