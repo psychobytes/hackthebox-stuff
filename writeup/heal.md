@@ -37,10 +37,12 @@ there is other interesting findings. we found other subdomain on the survey page
 ![image](https://github.com/user-attachments/assets/09563ee6-07a7-45f9-b313-f575bec33016)
 
 > Information that we collected so far :
+>
 > there are 3 domain on target (heal.htb, api.heal.htb, take-survey.heal.htb)
+>
 > heal.htb is the frontend, api.heal.htb is the backend (Ruby on Rails 7.1.4)
+>
 > web feature and api endpoint (resume, download, profile)
-> 
 
 ### Initial Access & Foothold
 after we carried out information gathering and reconnaisance, we got quite a lot of information about the target. with this information we know how the service or target works and the attack surface of the target. with sufficient information about the target, we can carry out analysis and look for vulnerabilities in the target.
