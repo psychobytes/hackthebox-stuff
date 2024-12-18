@@ -47,3 +47,11 @@ there is other interesting findings. we found other subdomain on the survey page
 ### Initial Access & Foothold
 after we carried out information gathering and reconnaisance, we got quite a lot of information about the target. with this information we know how the service or target works and the attack surface of the target. with sufficient information about the target, we can carry out analysis and look for vulnerabilities in the target.
 
+download the resume and intercept the traffic using burpsuite. forward the request until we get request at download endpoint.
+![image](https://github.com/user-attachments/assets/75e972c2-39af-41b0-bc75-a23940e05075)
+
+pay attention to the following request. at the request line (the firsr line of the http request) we 
+![image](https://github.com/user-attachments/assets/16116ce9-ed63-461a-b5be-0f1f73ea9785)
+
+
+
