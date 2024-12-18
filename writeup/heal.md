@@ -67,4 +67,8 @@ we can abuse this feature to retrieve any file in the server (example: /etc/pass
 we can ask AI for directory structure of Ruby on Rails and sesitive info inside it. by knowing the directory structure and sensitive files in it, we can look for files that most likely contain credentials in them to gain initial access.
 ![image](https://github.com/user-attachments/assets/5ceb2783-e70b-43e0-b31c-0cedd16638b8)
 
-try to get database.yml file.
+get database.yml file. database.yml file contain information about the database that being used. we can see there are two databases at /storage directory.
+![image](https://github.com/user-attachments/assets/37eaf178-52ac-4146-8db6-fbcbeb26da7d)
+
+get development.sqlite database at /storage directory. there is our credential & ralph creds (admin)
+![image](https://github.com/user-attachments/assets/5cd16f98-6eeb-444b-88cb-c30b0504e803)
