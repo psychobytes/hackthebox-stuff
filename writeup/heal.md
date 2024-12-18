@@ -101,4 +101,13 @@ we can't log in as ralph via ssh, maybe the password is wrong or maybe ralph don
 try logging in elsewhere. during recon we find the subdo take-survey.heal.htb. maybe we can try to log in there. and we are logged in.
 ![image](https://github.com/user-attachments/assets/d708a5c3-aa95-4357-bd8b-698f8dbfeafc)
 
+search for information about limesurvey vulnerabilities or exploits on google.
+![image](https://github.com/user-attachments/assets/ceac8352-4363-41f6-8491-3998d467989d)
 
+CVE-2021-44967 allows us to achieve remote code execution via the plugin's upload and install functions. source : [nvd.nist.gov](https://nvd.nist.gov/vuln/detail/CVE-2021-44967)
+![image](https://github.com/user-attachments/assets/c855e9f9-0d9f-46b5-859a-bb128014de04)
+
+even though based on information from the nvd.nist.gov website that the vulnerability exists in limesurvey version 5.2.4, we can still exploit this feature because until now there has been no solution for this vulnerability since this vulnerability was disclosed. source : [pentest-tools.com](https://pentest-tools.com/vulnerabilities-exploits/limesurvey-524-rce-vulnerability_13029)
+![image](https://github.com/user-attachments/assets/fde537ed-9a43-447e-b68a-aa4754608fad)
+
+we can exploit this vulnerability using exploit from [https://github.com/Y1LD1R1M-1337/Limesurvey-RCE](https://github.com/Y1LD1R1M-1337/Limesurvey-RCE)
