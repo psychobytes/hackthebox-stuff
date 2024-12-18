@@ -35,6 +35,16 @@ if we do further enumeration on the api.heal.htb subdomain, we can find several 
 
 there is other interesting findings. we found other subdomain on the survey page (take-survey.heal.htb). we can access it by pressing the survey button then press take the survey button at survey page.
 ![image](https://github.com/user-attachments/assets/09563ee6-07a7-45f9-b313-f575bec33016)
+![image](https://github.com/user-attachments/assets/3d0c9057-aef0-4d68-bdbc-d1b1c6db4da6)
+
+if we go to the index.php page we can find out that there is an admin user (ralph@heal.htb). we also know that the subdo using LimeSurvey.
+![image](https://github.com/user-attachments/assets/dce88738-f6ea-445d-9d9c-6eb29c073b43)
+
+we also found login page if we do directory enumeration using dirsearch.
+![image](https://github.com/user-attachments/assets/a62b0eb2-e54b-46c9-a38c-f8a0b251d385)
+![image](https://github.com/user-attachments/assets/a81f9816-0057-41c0-82ff-7a25b099f4bd)
+
+after we carried out information gathering and reconnaisance, we got quite a lot of information about the target. with this information we know how the service or target works and the attack surface of the target. with sufficient information about the target, we can carry out analysis and look for vulnerabilities in the target.
 
 > Information that we collected so far :
 >
@@ -43,10 +53,12 @@ there is other interesting findings. we found other subdomain on the survey page
 > heal.htb is the frontend, api.heal.htb is the backend (Ruby on Rails 7.1.4)
 >
 > web feature and api endpoint (resume, download, profile)
+>
+> take-surver.heal.htb using LimeSurvey
+>
+> there is an admin named ralph (ralph@heal.htb)
 
 ### Initial Access & Foothold
-after we carried out information gathering and reconnaisance, we got quite a lot of information about the target. with this information we know how the service or target works and the attack surface of the target. with sufficient information about the target, we can carry out analysis and look for vulnerabilities in the target.
-
 download the resume and intercept the traffic using burpsuite. forward the request until we get request at download endpoint.
 ![image](https://github.com/user-attachments/assets/75e972c2-39af-41b0-bc75-a23940e05075)
 
@@ -67,8 +79,26 @@ we can abuse this feature to retrieve any file in the server (example: /etc/pass
 we can ask AI for directory structure of Ruby on Rails and sesitive info inside it. by knowing the directory structure and sensitive files in it, we can look for files that most likely contain credentials in them to gain initial access.
 ![image](https://github.com/user-attachments/assets/5ceb2783-e70b-43e0-b31c-0cedd16638b8)
 
-get database.yml file. database.yml file contain information about the database that being used. we can see there are two databases at /storage directory.
+database.yml file contain information about the database that being used. we can see there are two databases at /storage directory (test.sqlite3, and development.sqlite3).
 ![image](https://github.com/user-attachments/assets/37eaf178-52ac-4146-8db6-fbcbeb26da7d)
 
-get development.sqlite database at /storage directory. there is our credential & ralph creds (admin)
+based on the database.yml file development.sqlite3 is the database used by the target in production. open the file to obtain the credentials. development.sqlite3 seems to contain the credentials for web heal.htb. There is a user that we use when registering and user ralph (web administrator).
 ![image](https://github.com/user-attachments/assets/5cd16f98-6eeb-444b-88cb-c30b0504e803)
+
+crack ralph password hash to get the password for ralph account. we must identify the type of hashing algorithm used in the hash. to identify hash type we can use hash identifier ([hashes.com](https://hashes.com/en/tools/hash_identifier).
+![image](https://github.com/user-attachments/assets/83330b9e-0cc4-4315-b015-262f7bab755d)
+
+crack the hash using hashcat.
+![image](https://github.com/user-attachments/assets/f95741d0-175b-40e0-b87f-517dc1c9bf5e)
+![image](https://github.com/user-attachments/assets/db866552-4a15-4f2d-866f-5498b2bde297)
+
+based on our finding earlier while doing reconnaisance (at subdo / LimeSurvey) and while we testing LFI vulnerability (get /etc/passwd), we knew that user ralph is exist. try to login via ssh using cracked password.
+![image](https://github.com/user-attachments/assets/727ad4a2-14b7-4e72-ad7a-4882e6c6d7f4)
+
+we can't log in as ralph via ssh, maybe the password is wrong or maybe ralph dones't have access to ssh. since ralph is the web admin, we try logging in as ralph on the heal.htb web maybe we can find an additional feature that the admin has. but we didn't find additional feature that admin usually has (example: dashboard).
+![image](https://github.com/user-attachments/assets/f1ac9225-b2e3-4c95-96a4-7b7c9b05ad88)
+
+try logging in elsewhere. during recon we find the subdo take-survey.heal.htb. maybe we can try to log in there. and we are logged in.
+![image](https://github.com/user-attachments/assets/d708a5c3-aa95-4357-bd8b-698f8dbfeafc)
+
+
