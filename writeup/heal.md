@@ -155,5 +155,13 @@ first, we need to log in as ron via ssh to get more stable and better shell.
 see listening port to discover running service using netstat.
 ![image](https://github.com/user-attachments/assets/6b77e127-7fee-4790-8b46-9b73a4bd01e1)
 
-
+there is port 8500 listening. use curl to retrieve data from the listening port. we get a response in the form of html file that says moved permanently but there is a href that goes to the /ui/ directory. use curl to retrieve data from /ui/ directory, we got response with title consul by hashicorp.
 ![image](https://github.com/user-attachments/assets/5d3d7883-ee66-4305-8901-cf616e69ae93)
+
+because port 8500 can only be accessed locally, we need to do port forwarding using ssh so we can access these resources.
+![image](https://github.com/user-attachments/assets/dd570130-afd3-409b-969f-83dfac615255)
+
+we can access these resources from our host.
+![image](https://github.com/user-attachments/assets/5d8f133d-4711-471a-9a3c-ddda81ad1798)
+
+
