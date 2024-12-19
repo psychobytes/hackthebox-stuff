@@ -139,7 +139,7 @@ run linpeas.
 we found a password on a php file.
 ![image](https://github.com/user-attachments/assets/4ee8727b-bcd8-40f6-a6c5-2e8d858b9bfa)
 
-access the php file and it turns out that the password is the password used for the database.
+access the php file and it turns out that the password used for the database.
 ![image](https://github.com/user-attachments/assets/553b8f8b-6ef9-4162-832b-244d892fb414)
 
 even if it turns out that the password is a database password, there is a possibility that another user will use the same password. try logging in as ralph with that password. login failed. if you look in the home directory, there is a home directory for another user, ron. try logging in as ron with that password. login successful.
@@ -148,3 +148,12 @@ even if it turns out that the password is a database password, there is a possib
 don't forget to grab user's flag.
 ![image](https://github.com/user-attachments/assets/7aa11013-4b8c-418f-a6f9-1ea51731b6a8)
 
+### Privilege Escalation to Root
+first, we need to log in as ron via ssh to get more stable and better shell.
+![image](https://github.com/user-attachments/assets/707e8771-d62a-4eef-b9bb-2b53b1ef4f7b)
+
+see listening port to discover running service using netstat.
+![image](https://github.com/user-attachments/assets/6b77e127-7fee-4790-8b46-9b73a4bd01e1)
+
+
+![image](https://github.com/user-attachments/assets/5d3d7883-ee66-4305-8901-cf616e69ae93)
