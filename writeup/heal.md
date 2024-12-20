@@ -152,16 +152,38 @@ don't forget to grab user's flag.
 first, we need to log in as ron via ssh to get more stable and better shell.
 ![image](https://github.com/user-attachments/assets/707e8771-d62a-4eef-b9bb-2b53b1ef4f7b)
 
-see listening port to discover running service using netstat.
+check for listening port to discover running service using netstat.
 ![image](https://github.com/user-attachments/assets/6b77e127-7fee-4790-8b46-9b73a4bd01e1)
 
-there is port 8500 listening. use curl to retrieve data from the listening port. we get a response in the form of html file that says moved permanently but there is a href that goes to the /ui/ directory. use curl to retrieve data from /ui/ directory, we got response with title consul by hashicorp.
+there is port 8500 listening. use curl to retrieve data from the listening port. we get a response in the form of html file that says moved permanently but there is a href that goes to the /ui/ directory. use curl to retrieve data from /ui/ directory, we got response again with html title consul by hashicorp.
 ![image](https://github.com/user-attachments/assets/5d3d7883-ee66-4305-8901-cf616e69ae93)
 
-because port 8500 can only be accessed locally, we need to do port forwarding using ssh so we can access these resources.
+because port 8500 can only be accessed locally, we need to do port forwarding using ssh so we can access that resources.
 ![image](https://github.com/user-attachments/assets/dd570130-afd3-409b-969f-83dfac615255)
 
-we can access these resources from our host.
+we can access that resources from our host.
 ![image](https://github.com/user-attachments/assets/5d8f133d-4711-471a-9a3c-ddda81ad1798)
 
+look for information about vulnerabilities in Consul on the internet.
+![image](https://github.com/user-attachments/assets/83c7336c-bc5b-458d-9bb8-ca6885860570)
 
+> Consul by Hashicorp RCE
+> 
+> in a certain configuration of Hashicorp Consul, an unauthentication attacker may be able to archive remote command execution on the server. the necessary conditions that make an agent vulnerable to this attack are:
+>
+> - the API is available on an interface that can be accessed over the network.
+> - script checks are enabled.
+> - ACLs are disabled or an ACL token is compromised.
+>
+> given the above conditions, an attacker can register a check on a remote agent with a malicious payload. By design, script checks allow arbitrary code execution, so allowing service registration with checks enabled via an exposed API presents an RCE (remote code execution) threat.
+>
+> source: [hashicorp blog](https://www.hashicorp.com/blog/protecting-consul-from-rce-risk-in-specific-configurations)
+
+we can check whether the configuration in the consul on the target are vulnerable and allows us to obtain RCE by visiting the endpoint /v1/check/self. because we access the consul directly from local (not over network, direct access from the server as a user via SSH port forwarding so we can access it from our host) and we can access the consul website, which means we are authorized. so we don't need to fulfill all the requirements above to obtain RCE. the only configuration we need is script checks enabled which is true in this case.
+![image](https://github.com/user-attachments/assets/8f8ef186-3e87-4d32-8e86-339ef3b459a0)
+
+we can use this exploit to obtain RCE. source: [exploit-db](https://www.exploit-db.com/exploits/51117)
+![image](https://github.com/user-attachments/assets/9eb0c342-edd9-4529-babb-65d1f0e06874)
+
+set a listener and run the exploit. we got root, machine pwned :3
+![image](https://github.com/user-attachments/assets/ba6c5cd1-3adc-4e1d-b908-804e423ed3ef)
