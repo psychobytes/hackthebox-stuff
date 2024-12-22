@@ -67,7 +67,7 @@ akses shell yang sudah diupload. shell akan terupload di direktori /assets/img
 
 ![image](https://github.com/user-attachments/assets/d6d49ae8-db1e-44f5-a342-3c44ff747761)
 
-cek nc listener, kita mendapat shell sebagai user www-data atau deamon
+cek nc listener, kita mendapat shell sebagai user www-data.
 
 ![image](https://github.com/user-attachments/assets/f9fb8e4b-19c0-4bb7-a4e7-22908839fe12)
 
