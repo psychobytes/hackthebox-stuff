@@ -1,1 +1,13 @@
+---
+title: "HackTheBox Alert"
+date: "January 6, 2025"
+description: "Cross site scripting to Local File Inclusion on Markdown file."
+difficulty : "Easy"
+opsystem : "Linux"
+---
 
+
+
+# HackTheBox - Alert
+
+### Reconnaisance & Information Gathering
