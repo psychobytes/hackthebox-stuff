@@ -52,22 +52,42 @@ Scan the machine with nmap to discover open ports and running service. Found two
     
     Task Completed
 
-Because there is a web service on this machine, do directory enumeration with dirsearch to discover directories that are on the web. We found several directories.
 
-Try accessing the website to find out how this website works.
+Since there is a web service running on this machine, we performed directory enumeration using dirsearch to discover the directories available on the web. We found several directories.
+
+We can access the website to understand how it functions. This website is a markdown viewer website. We can upload a markdown file and view (render) it on this website.
 
 ![image](https://github.com/user-attachments/assets/1ed03935-1afb-46c3-bed6-a023cf3bec5a)
 
-This is Markdowdn Viewer website. There is an upload button on the main page, we can upload a markdown file and view it.
+> Markdown is a lightweight markup language for creating formatted text using a plain-text editor. John Gruber created Markdown in 2004 as an easy-to-read markup language. Markdown is widely used for blogging and instant messaging, and also used elsewhere in online forums, collaborative software, documentation pages, and readme files. 
+>
+> source: [wikipedia.org](https://en.wikipedia.org/wiki/Markdown)
 
-> Markdown is a lightweight markup language for creating formatted text using a plain-text editor. [Wikipedia](https://en.wikipedia.org/wiki/Markdown)
+Try to upload a markdown file. The website will render the uploaded markdown file and we can obtain a link to the uploaded markdown file by using the 'Share Markdown' button.
 
-We can try to create a markdown file and upload it. The web will render the markdown file that we uploaded. We also can get a link from the markdown file that we uploaded using the share markdown button.
+    # test
+    ## im heker
+    
+    test markdown
 
 ![image](https://github.com/user-attachments/assets/632a1e4d-a017-4c1a-80f7-18035fb28408)
 
-Cool thing about markdown is, we can put html and js script inside it and it will rendered. Try to put xss payload inside the markdown then upload it. If the web is vuln, xss will triggered.
+The cool thing about Markdown is that we can include HTML and JavaScript within it, and it will be rendered. Try inserting an XSS payload into the Markdown file and then upload it. If the website is vulnerable to XSS, the payload will be executed.
+
+We'll use `<script>alert('heker')</script>` payload. This payload is commonly used for testing xss vulnerability. This is a javascript code that will display a dialog box (alert) in the browser with the message "heker".
+
+    # test
+    ## im heker
+    
+    test xss payload
+    <script>alert('heker')</script>
 
 ![image](https://github.com/user-attachments/assets/57d46eaf-63d1-4103-88a6-681e892cfa6e)
+
+> Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. XSS attacks occur when an attacker uses a web application to send malicious code, generally in the form of a browser side script, to a different end user. Flaws that allow these attacks to succeed are quite widespread and occur anywhere a web application uses input from a user within the output it generates without validating or encoding it.
+>
+> An attacker can use XSS to send a malicious script to an unsuspecting user. The end user’s browser has no way to know that the script should not be trusted, and will execute the script. Because it thinks the script came from a trusted source, the malicious script can access any cookies, session tokens, or other sensitive information retained by the browser and used with that site. These scripts can even rewrite the content of the HTML page.
+>
+> source: [owasp.org](https://owasp.org/www-community/attacks/xss/)
 
 
