@@ -44,7 +44,7 @@ there is written:
     
     Decipher this message if you wish to see the stolen item returned. Follow the clues, prove your cleverness, and only then will you reclaim what was taken.
 
-#### 0x00 What did you find in chall?
+### 0x00 What did you find in chall?
 Ada kertas yang sengaja ditinggalkan pelaku. Di kertas tersebut terdapat "note I left for you to reads" (catatan kutinggalkan untuk kamu baca) dan string atau teks random dibawahnya ("vdk3uLc8/zbp.avorgfnc//:fcggu"). Di kertas tersebut juga terdapat pesan "Decipher this message if you wish to see the stolen item returned" berarti kita harus decipher atau memecahkan pesan tersebut.
 
 Jika kita perhatikan baik-baik, string tersebut memiliki struktur yang mirip dengan url namun dibalik dari belakang ke depan. Mirip seperti url karena ada tanda "://", "fcggu" yang terdiri dari 5 huruf sehingga kemungkinan berarti https, lalu ada "zbp." yang kemungkinan merupakan TLD yang terdiri dari 3 huruf, "/vdk3uLc8" yang sepertinya merupakan direktori / path. 
@@ -64,11 +64,11 @@ Kita mendapat URL pastebin. Di dalam pastebin tersebut terdapat catatan lagi. Ca
 > What did you find in chall ? { https://pastebin.com/xxxxx }
 
 
-#### 0x00 What ciphers are being used?
+### 0x00 What ciphers are being used?
 Chiper yang digunakan di challenge tadi adalah Caesar Chiper ROT13 (rotate by 13 places) yang dibalik (mirror / reverse). Namun karena keterbatasan petunjuk mengenai format jawaban, saya tidak bisa solve di chall ini.
 
 
-#### 0x01 What did you find in chall?
+### 0x01 What did you find in chall?
 Dari pastebin yang kita peroleh dari chall sebelumnya kita mendapatkan sebuah catatan lagi.
 
     0x01 Enjoy the game, chill... it will be fun, hehe
@@ -108,13 +108,13 @@ URL tersebut akan redirect ke imgur. Di halaman tersebut terdapat gambar jalan d
 
 Saya stuck disini. Di gambar semua plat nomor sudah disensor sehingga saya tidak bisa mengidentifikasi lokasi tempat tersebut berdasarkan plat nomor. Ada Alfamart di foto tersebut namun alfamart tersebar di seluruh Indonesia sehingga tidak bisa menjadi clue. Clue yang saya punya hanyalah "SUKOWATI Bakso & Mie Ayam", dan pada pastebin sebelumnya terdapat clue "that's city is cool :D" yang berarti kota itu dingin / keren?. Mungkin bisa jadi petunjuk untuk lokasi foto tersebut. Bisa disimpulkan bahwa kemungkinan foto tersebut diambil di kota yang dingin atau dataran tinggi.
 
-#### 0x01 What ciphers are being used?
+### 0x01 What ciphers are being used?
 Not Solved Yet.
 
-#### 0x02 What did you find in chall?
+### 0x02 What did you find in chall?
 Not Solved Yet.
 
-#### 0x02 What did the thief do last?
+### 0x02 What did the thief do last?
 Not Solved Yet.
 
 
@@ -127,7 +127,7 @@ In the early hours, still half-asleep, a mysterious phone call shattered the qui
 
 > Download Task File on TryHackMe. (Joker-Unknown-Call-1739806429987.wav)
 
-#### 1x01 What's that sound?
+### 1x01 What's that sound?
 Jika diputar, file audio tersebut berisi suara piano dan nada "beep" putus-putus. Jika didengarkan dengan headset atau speaker stereo (dua arah) suara piano terdengar di kiri dan kode morse di kanan.
 
 Nada "beep" putus-putus itu adalah kode morse
@@ -135,7 +135,7 @@ Nada "beep" putus-putus itu adalah kode morse
 > 1x01 What's that sound? { morxx }
 
 
-#### 1x01 What did you get from the sound?
+### 1x01 What did you get from the sound?
 Kita perlu memecahkan pesan yang disampaikan menggunakan kode morse tersebut. Gunakan Audacity untuk mengedit audio tersebut agar kode morse bisa terdengar dengan jelas. Matikan suara di sebelah kiri dengan menggeser slider "R L" ke kanan (R) agar suara piano menjadi tidak terdengar. Potong audio di bagian kode morsenya saja. Setelah itu export hasilnya menjadi mono (audio satu arah).
 
 ![image](https://github.com/user-attachments/assets/ad5937ba-9d55-4f28-b78d-a88d26158aca)
@@ -149,7 +149,7 @@ Hasil decode berupa sebuah URL.
 > 1x01 What did you get from the sound? { https://bit.ly/xxxxx }
 
 
-#### 1x01 What is in the picture?
+### 1x01 What is in the picture?
 URL tadi akan redirect ke imgur. Halaman tersebut berisi sebuah gambar bulan dengan gambar QR code yang samar-samar (perhatikan atas kiri bulan).
 
 ![image](https://github.com/user-attachments/assets/26b92ee5-5c70-4837-b777-204e098ab030)
@@ -157,7 +157,7 @@ URL tadi akan redirect ke imgur. Halaman tersebut berisi sebuah gambar bulan den
 > 1x01 What is in the picture? { xxcode }
 
 
-#### 1x01 What was the data you got from the Images?
+### 1x01 What was the data you got from the Images?
 QR code terlihat samar-samar. Kita bisa memperjelas kode QR tersebut dengan mengatur pencahayaan pada gambar. Kita bisa menggunakan [www.photopea.com/](https://www.photopea.com/)
 
 ![image](https://github.com/user-attachments/assets/78d0fd81-2c68-40ad-b544-a704a85b9286)
@@ -173,7 +173,7 @@ Jika dibuka URL tersebut akan redirect ke pastebin.
 > 1x01 What was the data you got from the Images? { https://pastebin.com/xxxxx }
 
 
-#### 1x02  What is the full name in question?
+### 1x02  What is the full name in question?
 Pastebin tersebut berisi teks sebagai berikut :
 
     1x01
@@ -195,7 +195,7 @@ Otto Iskandardinata merupakan pahlawan dari bandung. Ia mengajar di HIS (Holland
 > 1x02  What is the full name in question? { Otxx Iskanxxxxx }
 
 
-#### 1x02  What is the link password?
+### 1x02  What is the link password?
 ![image](https://github.com/user-attachments/assets/7f2218ba-0e27-44a8-a8fd-cd7569e0c47a)
 
 Karena Chall sebelumnya membahas mengenai Otto Iskandardinata, saya berasumsi bahwa passwordnya adalah nama depan pahlawan tersebut.
@@ -225,7 +225,7 @@ After some time, a message arrives—someone claims to have the vase the player 
     my advice is addition would be better https://pastebin.com/JUzZspYa"
 
 
-#### What does the message pastebin refer to?
+### What does the message pastebin refer to?
 
 ![image](https://github.com/user-attachments/assets/8f61899d-ed38-4ad4-ac3b-73eb3a0fd2a3)
 
@@ -240,13 +240,13 @@ Hint di soal jawabannya adalah "Alternate Name of the city", berarti nama lain d
 > What does the message pastebin refer to? { saruxxxx }
 
 
-#### What are we asked to visit?
+### What are we asked to visit?
 Karena pada chall sebelumnya sering menggunakan bit.ly dan format jawaban yang terdiri dari xxx.xx/xxxxxxxx, saya berasumsi bahwa jawabannya adalah bit.ly/saruxxxx
 
 > What are we asked to visit? { bit.ly/saruxxxx }
 
 
-#### Where is the actual location of the place?
+### Where is the actual location of the place?
 URL bit.ly pada chall sebelumnya jika dikunjungi akan redirect ke sebuah channel telegram.
 ![image](https://github.com/user-attachments/assets/5f02006e-1265-4cfb-9c10-f0a8e62acc44)
 
@@ -262,7 +262,7 @@ The investigator team begins an initial analysis of the suspected group. During 
 
 The first step was to identify the account that sent the image. Investigators focused on the digital footprint of the account, such as message metadata or potential links to other accounts. After that, the team also reviewed the two messages contained in the group. As a result, it was found that both messages contained instructions or invitations to go to a certain place, although the details of the location still need to be explored further.
 
-#### Which country is it?
+### Which country is it?
 Pesan terakhir di telegram oleh Elene Kurtanidze "meet me here..." dan sebuah foto. Dia meminta kita untuk menemuinya disana, jadi kita perlu menentukan lokasi gambar tersebut.
 
 ![image](https://github.com/user-attachments/assets/bcd0b064-302c-42d5-b4a3-ea6739930a04)
@@ -274,7 +274,7 @@ Lakukan reverse image search gambar tersebut menggunakan [images.google.com](htt
 > Which country is it? { Irel*** }
 
 
-#### Which location is it?
+### Which location is it?
 Search "National Monument Ireland" di maps dan ditemukan lokasi monumen nasional itu.
 
 ![image](https://github.com/user-attachments/assets/87298086-a41a-4648-b1d7-7f697b4c47bb)
@@ -282,7 +282,7 @@ Search "National Monument Ireland" di maps dan ditemukan lokasi monumen nasional
 > Which location is it? { Grxxx Paxxxx }
 
 
-#### What was the inspiration for the sock puppet identity of the alleged perpetrator?
+### What was the inspiration for the sock puppet identity of the alleged perpetrator?
 Kita dapat mengetahui Inspirasi dari identitas palsu (sock puppet) pelaku dengan cara googling username pelaku (Elene Kurtanidze).
 
 ![image](https://github.com/user-attachments/assets/7152dfe4-c2bb-43f5-9ddd-86465a908915)
@@ -298,7 +298,7 @@ Sepertinya identitas sock puppet yang digunakan pelaku terinspirasi dari Elene K
 > What was the inspiration for the sock puppet identity of the alleged perpetrator? { Lisxxxxxxxx Crxx }
 
 
-#### Who is the owner of the group?
+### Who is the owner of the group?
 Owner dari grup bisa kita lihat di bagian members di telegram. Terlihat jOk3r p merupakan owner dari grup itu.
 ![image](https://github.com/user-attachments/assets/5baf9530-0a85-4eb4-9b03-b8207b2e2deb)
 
@@ -308,7 +308,7 @@ Jika kita cek, username dari user tersebut adalah @jOk3rph
 > Who is the owner of the group? { jOk3xxx }
 
 
-#### When was the photo of the building taken?
+### When was the photo of the building taken?
 Karena di gambar terdapat watermark google, dapat dipastikan bahwa gambar tersebut bukan diambil secara langsung, melainkan diambil dari google street view. Cek google street view dan lihat tanggal lainnya. Foto di grup telegram cocok dengan streetview di tahun 2011 (perhatikan gambar bunga taman berbentuk segitiga di bawah lampu hijau. bunga tersebut hanya muncul di streetview tahun 2011).
 
 ![image](https://github.com/user-attachments/assets/3fc233b7-2894-49d4-91c2-b1d4fb4b59bb)
@@ -329,12 +329,12 @@ As it was getting late and suspicious activity was no longer visible, we returne
 
 What will be your next step?
 
-#### What's odd about ross jennings' statement?
+### What's odd about ross jennings' statement?
 Yang janggal / aneh dari statement ross jennings adalah dia menunggu temannya dan temannya tersebut memiliki background sebagai salt harvester di Ireland. Janggal karena dia memberikan detail berlebih yang sebenarnya tidak diperlukan. Orang ketika bohong, gugup, atau grogi biasanya akan memberikan detail berlebih yang tidak diperlukan ketika berbicara. Selain itu Irlandia beriklim dingin dan biasanya Salt Harvesting biasanya dilakukan di daerah beriklim tropis dengan paparan sinar matahari yang cukup agar dapat mempercepat penguapan air laut dalam proses pembuatan garam. Sehingga pekerjaan salt harvester di Irlandia sepertinya cukup janggal dan mungkin mengada-ngada, kemungkinan besar dia berbohong dan dia bohong dengan alibi yang buruk karena gugup.
 
 > What's odd about ross jennings' statement? { saxx harvxxxxxx }
 
-#### What does ross jennings do for a living?
+### What does ross jennings do for a living?
 Untuk mengetahui pekerjaan Ross Jennings kita bisa mengecek sosial medianya. Karena hint dari pertanyaan setelah ini adalah "A little birdie told me.." kita bisa mulai mencari di twitter.
 
 ![image](https://github.com/user-attachments/assets/b9f409f0-fc0d-4553-829f-65c6b96b85e1)
@@ -351,7 +351,7 @@ Ex-ARW and G2 Intel. ARW (Army Ranger Wing) merupakan pasukan operasi khusus mil
 > What does ross jennings do for a living? { mercxxxxxxx }
 
 
-#### What's the username of ross social media?
+### What's the username of ross social media?
 Username sosial media yang ross gunakan berdasarkan informasi yang diperoleh dari challenge sebelumnya adalah @r_jennings70
 
 ![image](https://github.com/user-attachments/assets/b9f409f0-fc0d-4553-829f-65c6b96b85e1)
@@ -359,7 +359,7 @@ Username sosial media yang ross gunakan berdasarkan informasi yang diperoleh dar
 > What's the username of ross social media? { r_jenxxxxxxx }
 
 
-#### Where did might be the perpetrator lurk on the day of the encounter?
+### Where did might be the perpetrator lurk on the day of the encounter?
 Berdasarkan kejadian sebelumnya ("Some team members even disguised themselves as local residents and entered a nearby bar. There, from an adjacent table, they observed a man in his thirties who appeared to be scanning his surroundings as if searching for someone, frequently checking his watch. The team then approached him under the pretense of being first-time tourists visiting the area."), diketahui bahwa tim bertemu dengan Ross Jennings di dalam sebuah bar di lokasi sekitar.
 
 Lokasi pertemuan ada di Grand Parade, dekat National Monument, Cork, Ireland. Berarti tim menemui Ross Jennings di sebuah bar di sekitar National Monument di Grand Parade. Kita bisa menggunakan google street view untuk melihat bar di sekitar lokasi.
@@ -378,7 +378,7 @@ Based on these findings, we decided to strategically divide the tasks. Players w
 
 This division of tasks is expected to speed up the evidence collection process and provide a more comprehensive picture of the target's physical location, so that follow-up steps can be carried out appropriately and effectively.
 
-#### What is the full name of he's daughter?
+### What is the full name of he's daughter?
 Karena kita sudah menemukan twitter milik tersangka pada challenge sebelumnya, kita akan mencari informasi mengenai anaknya di twitter tersangka. Ditemukan tweet dimana tersangka meminta doa untuk anaknya. Dan terdapat URL rumah sakit di tweet tersebut.
 
 ![image](https://github.com/user-attachments/assets/8fa7091b-f0cf-4c47-8ecc-125575da461f)
@@ -390,19 +390,19 @@ URL tersebut berisi daftar nama pasien perempuan dan terdapat nama "Hellen Jenni
 > What is the full name of he's daughter? { Hxxxxx Jennings }
 
 
-#### What disease does the daughter of he have?
+### What disease does the daughter of he have?
 Berdasarkan dokumen di URL tadi diketahui bahwa anak tersangka mengidap penyakit cancer
 
 > What disease does the daughter of he have? { canxxx }
 
 
-#### Who is he might be working for?
+### Who is he might be working for?
 Tersangka berkerja sebagai mercenaries dan kemungkinan dia dibayar oleh seseorang untuk melakukan pekerjaan ini. Dari informasi yang ditemukan pada challenge sebelumnya diketahui bahwa owner dari grup telegram adalah j0k3r dan kita beberapa kali menemukan nama tersebut di challenge lain sepanjang penyelidikan kasus ini. j0k3r juga merupakan orang yang memberikan berbagai challenge ini ke kita, seperti yang diketahui dari pastebin terakhir di Day 2, Task 2 (Joker@phantomt.id).
 
 > Who is he might be working for? { j0kxx }
 
 
-#### What's the name of his sockpuppet?
+### What's the name of his sockpuppet?
 Nama akun palsu (sockpuppet) milik tersangka adalah "Elene Kurtanidze". Diketahui dari challenge Day 2, Task 3 dimana dia merupakan orang yang mengirim pesan berupa gambar petunjuk lokasi pertemuan di telegram.
 
 Selain itu pelaku juga ada membuat tweet dimana dia berkata bahwa anak perempuannya sangat menyukai Elene Kurtanidze.
@@ -413,7 +413,7 @@ Selain itu pelaku juga ada membuat tweet dimana dia berkata bahwa anak perempuan
 > What's the name of his sockpuppet? { Exxxx Kurtxnxxxx }
 
 
-#### What is his full address?
+### What is his full address?
 Kita bisa menemukan alamat pelaku dari website rumah sakit dimana anaknya dirawat. Di daftar pasien perempuan yang ada di website rumah sakit tersebut, klik nama anaknya dan kita akan diarahkan ke srcibd yang berisi dokumen invoice biaya perawatan anaknya. Di dokumen tersebut ada alamat lengkapnya.
 
 ![image](https://github.com/user-attachments/assets/c253c76a-f3a5-4f31-b261-6e41fce3edcf)
@@ -421,7 +421,7 @@ Kita bisa menemukan alamat pelaku dari website rumah sakit dimana anaknya dirawa
 > What is his full address? { 4x Uxxxx Jxxx Sx Cxxx }
 
 
-#### Which hospital is the child currently in?
+### Which hospital is the child currently in?
 Nama rumah sakitnya adalah Cork University Hospital. Nama ini dapat kita peroleh dari website rumah sakit, atau di dokumen invoice di scribd tadi.
 
 ![image](https://github.com/user-attachments/assets/72d52cb6-3ed1-4767-9bd2-cee71c2689da)
@@ -429,7 +429,7 @@ Nama rumah sakitnya adalah Cork University Hospital. Nama ini dapat kita peroleh
 > Which hospital is the child currently in? { Cxxx Uxxxxxx Hxxxxx }
 
 
-#### How much did the man have to pay for his daughter's surgery?
+### How much did the man have to pay for his daughter's surgery?
 Biaya operasi anaknya adalah $200.000.000. Bisa dilihat di dokumen invoice di scribd.
 
 ![image](https://github.com/user-attachments/assets/a017f8af-c868-4124-9ec5-75044fc7b9aa)
@@ -437,7 +437,7 @@ Biaya operasi anaknya adalah $200.000.000. Bisa dilihat di dokumen invoice di sc
 > How much did the man have to pay for his daughter's surgery? { $xxx.xxx.xxx }
 
 
-#### When is ross's daughter's birthday?
+### When is ross's daughter's birthday?
 Tersangka pernah mereply sebuah tweet mengenai hadiah ulang tahun anaknya. Hadiah tersebut sepertinya adalah konser yang akan digelar pada tanggal 6 maret.
 
 ![image](https://github.com/user-attachments/assets/58944ab4-5aef-456c-8abc-157921b29e5f)
@@ -475,7 +475,7 @@ After successfully cracking the initial code, we were led into a dimly lit under
 ![image](https://github.com/user-attachments/assets/cdcbd435-277c-4865-8d7e-d49691c02e02)
 
 
-#### What was the cause of Ross' death?
+### What was the cause of Ross' death?
 Hint: is it real suicide?
 
 Sepertinya penyebab kematian ross bukan bunuh diri. Karena pintu rumah tidak dikunci (kemungkinan jalur keluar pelaku) dan pistol yang dipegang Ross adalah Glock 17 sedangkan peluru yang berceceran adalah .45 ACP. Seharusnya Glock 17 menggunakan peluru 9mm bukan .45 ACP.
@@ -487,13 +487,13 @@ Sepertinya penyebab kematian ross bukan bunuh diri. Karena pintu rumah tidak dik
 > What was the cause of Ross' death? { kilxxx }
 
 
-#### What's strange about crime scene evidence?
+### What's strange about crime scene evidence?
 Yang aneh dari tempat kejadian adalah selongsong peluru (shell) yang digunakan.  Seharusnya Glock 17 menggunakan peluru 9mm bukan .45 ACP
 
 > What's strange about crime scene evidence? { shxxx }
 
 
-#### What are the value of the following variables? (sort according to the question) ✊️,✋️,✌️,✍️
+### What are the value of the following variables? (sort according to the question) ✊️,✋️,✌️,✍️
 Definisikan emoji sebagai variabel. ✊ (Fist) = x, ✋ (Open Hand) = y, ✌️ (Victory Hand) = z, ✍️ (Writing Hand) = w. Dari petunjuk gambar yang ada di laci diketahui bahwa :
 
 ![image](https://github.com/user-attachments/assets/cd8ab85c-1ef8-41cc-8ecf-4caba9263ab8)
@@ -519,13 +519,13 @@ Berarti x + y = 9, z + w = 3, x + z = 4, w = y − 4.
 > What are the value of the following variables? (sort according to the question) ✊️,✋️,✌️,✍️ { 3,x,x,x }
 
 
-#### What is the code for an underground door locker?
+### What is the code for an underground door locker?
 Kode pintu bawah tanah adalah 🔓 = ✊️ ✋️ ✌️ ✍️. Berdasarkan perhitungan tadi, berarti kodenya adalah 3612.
 
 > What is the code for an underground door locker? { 3xxx }
 
 
-#### What is the code for the safe in the basement?
+### What is the code for the safe in the basement?
 Kode untuk safe (brangkas) di basement adalah 🔓 =✊️✌️✊️✋️. Berdasarkan perhitungan tadi, berarti kodenya adalah 3136.
 
 > What is the code for the safe in the basement? { 3xxx }
@@ -545,13 +545,13 @@ The note read:
     J0K3R
 
 
-#### What was Ross Jennings' involvement in this incident?
+### What was Ross Jennings' involvement in this incident?
 Bisa disimpulkan bahwa keterlibatan Ross Jennings dalam kasus ini adalah sebagai mercenary (tentara bayaran). Kemungkinan besar dia berkerja untuk j0k3r karena memerlukan biaya yang besar untuk operasi anak perempuannya.
 
 > What was Ross Jennings' involvement in this incident? { mercxxxxx }
 
 
-#### Is this robbery case over yet?
+### Is this robbery case over yet?
 Kasus ini belum selesai karena kita belum mengetahui identitas j0k3r.
 
 > Is this robbery case over yet? { Nx }
