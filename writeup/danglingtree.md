@@ -717,6 +717,7 @@ SMB         10.129.10.114   445    DC               [+] danglingtree.htb\jake.h:
 
 <img width="1536" height="864" alt="image" src="https://github.com/user-attachments/assets/60756e4e-c5c8-4246-8fcb-a8237f68cbfa" />
 <img width="1212" height="659" alt="image" src="https://github.com/user-attachments/assets/70c0eae0-7ec9-4bc9-a6d5-84099c4c9ae4" />
+
 ```
 ┌──(blackcat㉿threatactor)-[~/Desktop/danglingtree-htb]
 └─$ nc -lvnp 9999                                                  
