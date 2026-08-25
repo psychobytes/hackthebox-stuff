@@ -149,9 +149,8 @@ Eventually, Miku is uninstalled.
 The song was released on November 8, 2007, while the longer version,
 **THE END OF HATSUNE MIKU (LONG VERSION)**, followed in April 2008.
 cosMo@BousouP later released a 2018 remake for Miku's 10th anniversary. 
-:contentReference[oaicite:1]{index=1}
 
-![THE END OF HATSUNE MIKU by cosMo@BousouP](https://github.com/user-attachments/assets/6650614b-b738-4462-ac72-6897a38b16b7)
+![the-end-of-hatsune-miku](https://github.com/user-attachments/assets/6650614b-b738-4462-ac72-6897a38b16b7)
 
 *THE END OF HATSUNE MIKU — a song about the disappearance and eventual
 deletion of a digital Miku.*
